@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop">
+	<select id="list" resultType="shopDTO" parameterType="com.mini.minishop.Pagination">
+		SELECT b.* FROM (
+		SELECT rownum as rnum, A.id, A.name, A.price, A.company
+		from (
+		select ID, NAME, PRICE, COMPANY
+		from "SHOP"
+		order by id )A
+		)B WHERE <![CDATA[ rnum<=#{endCount}]]>
+		AND <![CDATA[ rnum>=#{startCount}]]>
+	</select>
+	<select id="select" parameterType="shopDTO" resultType="shopDTO">
+		select *
+		from "SHOP" where id=#{id}
+	</select>
+	<delete id="delete" parameterType="shopDTO">
+		delete from "SHOP" where
+		id=#{id}
+	</delete>
+	<select id="countRow" resultType="int">
+		select count(*) from "SHOP"
+	</select>
+	<update id="update" parameterType="shopDTO">
+		update "SHOP" set NAME=#{name}, PRICE=#{price}, COMPANY=#{company} where ID=#{id}
+	</update>
+</mapper>
